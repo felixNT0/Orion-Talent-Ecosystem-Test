@@ -27,6 +27,7 @@ const App = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [postText, setPostText] = useState("");
+  const [searchForLocation, setSearchForLocation] = useState("");
   const [isPostSubmitted, setIsPostSubmitted] = useState(false);
 
   // Function to open the image picker
@@ -246,14 +247,26 @@ const App = () => {
             borderRadius: 25,
             paddingHorizontal: 15,
             marginTop: 15,
+            paddingVertical: 10,
+            gap: 10,
           }}
         >
           <Icon name="search" size={20} color="black" />
-          <TextInput value={postText} style={{ color: "black" }} />
+          <TextInput
+            onChangeText={(e) => setSearchForLocation(e)}
+            value={searchForLocation}
+            style={{ color: "black" }}
+          />
         </View>
         <View style={{ marginTop: 10 }}>
           <FlatList
-            data={locations}
+            data={
+              searchForLocation
+                ? locations.filter((item) =>
+                    item.toLowerCase().includes(searchForLocation.toLowerCase())
+                  )
+                : locations
+            }
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
               <TouchableOpacity
